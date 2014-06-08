@@ -7,8 +7,11 @@ local $ENV{PATH} = '/bin';
 
 my @cmd = qw(df -BM);
 open my $fs, '-|', @cmd or die "could not list filesystems\n";
+my @filesystems = <$fs>;
+#close fs to prevent df hanging around as zombie
+close $fs;
 
-while (<$fs>){
+for (@filesystems){
     chomp;
     #get all mount points and available space
     my ($space, $mount) = /^\/dev\/\S+\s+\S+\s+\S+\s+(\d+)M\s+\S+\s+(\S+)$/ or next;
@@ -24,4 +27,5 @@ while (<$fs>){
 }
 
 1;
+
 
