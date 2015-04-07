@@ -1,0 +1,19 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+my $PKG      = '/usr/bin/pkg';
+my $updavail = qr/Packages to update:\s+\d+/;
+
+my @cmd = ($PKG, qw(update -nv));
+
+open my $pkgs,  '-|', @cmd
+    or die "ERROR: cannot run 'pkg update'\n";
+
+chomp(my @pkgs = <$pkgs>);
+
+grep { /$updavail/ } @pkgs and print join("\n", @pkgs) . "\n";
+
+1;
+
