@@ -8,12 +8,12 @@ my $updavail = qr/Packages to update:\s+\d+/;
 
 my @cmd = ($PKG, qw(update -nv));
 
-open my $pkgs,  '-|', @cmd
+open my $pkgs, '-|', @cmd
     or die "ERROR: cannot run 'pkg update'\n";
 
-chomp(my @pkgs = <$pkgs>);
+my @pkgs = <$pkgs>;
 
-grep { /$updavail/ } @pkgs and print join("\n", @pkgs) . "\n";
+grep { /$updavail/ } @pkgs and print @pkgs;
 
 1;
 
